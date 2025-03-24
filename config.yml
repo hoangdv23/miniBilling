@@ -1,0 +1,31 @@
+app_name: miniBilling
+http_address: 8880
+
+log:
+  log_level: debug
+  file_log_name: "./storages/logger/log.log"
+  max_size:    500
+  max_backups: 3
+  max_age:     07
+  compress:   true
+bot:
+  token_bot: 7419541452:AAEl6VcNgwbquEZKupYYIcb-bvQmj56XctM
+  #7419541452:AAEl6VcNgwbquEZKupYYIcb-bvQmj56XctM
+  #7195471412:AAHVrYX2NZH8NoZ6WdD9bxyjJ9grPQwgVVk
+mysql_billing:
+  host_billing: 103.112.209.141
+  port_billing: 3306
+  username_billing: hoangdv
+  password_billing: hoangdv123
+
+  db_DCN: VoiceReport
+  db_billing: billing
+
+  maxIdleConns: 10
+  minOpenConns: 5
+  maxOpenConns: 50
+  connMaxLifetime: 3600
+
+mongo:
+  url: mongodb://root:hoangdv@10.1.1.5:27017/
+  db_name: mini_billing
