@@ -45,10 +45,10 @@ var Login_InlineKeys = &tele.ReplyMarkup{
 		{BtnLogin},
 	},
 }
-// button Cdr
-var Cdr_InlineKeys = &tele.ReplyMarkup{
+// button Cdr // đang lỗi
+var Cdr_InlineKeys = tele.ReplyMarkup{
 	InlineKeyboard: [][]tele.InlineButton{
-		{BtnFixed,BtnVAS},
-		{BtnMBS,BtnContract},
+		{BtnFixed, BtnVAS},
+		{BtnMBS, BtnContract},
 	},
 }

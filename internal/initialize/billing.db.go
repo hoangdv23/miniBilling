@@ -37,7 +37,7 @@ func InitBilling(){
 		global.Billing = &Billing.BillingStruct{}
 	}
 	global.Billing.DB = db
-	// global.Logger.Info("Init mysql Billing success")
+	global.Logger.Info("Init mysql Billing success")
 
 
 	//set Pool

@@ -12,6 +12,7 @@ var(
 	Logger *logger.LoggerZap
 	Bot 	*bot.TeleBot
 	Billing *mysql.BillingStruct
+	VoiceReport *mysql.BillingStruct
 	DCN 	*mysql.DCNStruct
 	// Mongo	*
 )

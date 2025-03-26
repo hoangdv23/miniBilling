@@ -8,10 +8,12 @@ log:
   max_backups: 3
   max_age:     07
   compress:   true
+
 bot:
   token_bot: 7419541452:AAEl6VcNgwbquEZKupYYIcb-bvQmj56XctM
   #7419541452:AAEl6VcNgwbquEZKupYYIcb-bvQmj56XctM
   #7195471412:AAHVrYX2NZH8NoZ6WdD9bxyjJ9grPQwgVVk
+
 mysql_billing:
   host_billing: 103.112.209.141
   port_billing: 3306
@@ -21,6 +23,19 @@ mysql_billing:
   db_DCN: VoiceReport
   db_billing: billing
 
+  maxIdleConns: 10
+  minOpenConns: 5
+  maxOpenConns: 50
+  connMaxLifetime: 3600
+
+mysql_136:
+  host_136: 103.112.209.136
+  port_136: 3306
+  username_136: HoangDV
+  password_136: Digitel@123
+
+  db_136: VoiceReportDigitel
+  
   maxIdleConns: 10
   minOpenConns: 5
   maxOpenConns: 50

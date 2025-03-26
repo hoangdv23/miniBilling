@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	auth "miniBilling/cmd/middleware"
+	"miniBilling/global"
 	"miniBilling/internal/constant"
 	"miniBilling/internal/pkg/bot"
 	"miniBilling/internal/pkg/button"
@@ -21,17 +22,22 @@ func NewServer(b *tele.Bot){
 	b.Use(middleware.Recover())
 	b.Use(bot.AutoRespond("BOT không hiểu :D"))
 
-
-	userRepo := repository.NewUserRepository()
+	userRepo := repository.NewUserRepository(global.Billing.DB)
 	userUC := usecase.NewUserUseCase(userRepo)
 
-	billingRepo := repository.NewBillineRepository()
+	billingRepo := repository.NewBillineRepository(global.Billing.DB)
 	billingUC := usecase.NewBillingUsecase(billingRepo)
+
+	voiceReportRepo := repository.NewVoiceReportRepository(global.VoiceReport.DB)
+	voiceReportUC := usecase.NewVoiceReportUsecase(voiceReportRepo)
+
 	b.Use(auth.CheckUserMiddleware(userUC))
 
  
 	userHandler := 	NewUserHandler(userUC,b)
 	billingHander := NewBillingHandler(billingUC,b)
+	voiceReportHandler := NewVoiceReportHandler(voiceReportUC,userUC,b)
+	
 	b.Handle("/start", func(c tele.Context) error {
 		return userHandler.Start(c)
 	})
@@ -85,7 +91,7 @@ func NewServer(b *tele.Bot){
 		}else if callback == "btn_intro|button_intro"{
 			return ctx.Send("Xin giới thiệu với bạn, đây là bot mini Billing, phục vụ các tính năng nhanh gọn nhẹ ;D")
 		}else if callback == "btn_cdr|Cdr" {
-			return ctx.Send("Bạn muốn lấy CTC dịch vụ nào?",button.Cdr_InlineKeys)
+			return ctx.Send("Bạn muốn lấy CTC dịch vụ nào?",voiceReportHandler.Cdr)
 		}
 		return ctx.Send(callback)
 	})

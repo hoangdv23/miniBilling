@@ -7,13 +7,16 @@ import (
 	tele "gopkg.in/telebot.v4"
 )
 
+type BillingHandlerInterface interface {
+	GetCodeLogin(c tele.Context) error 
+}
 
 type BillingHandler struct {
-	billingUC *usecase.BillingUseCase
+	billingUC usecase.Billing
 	Bot    *tele.Bot
 }
 
-func NewBillingHandler(billingUC *usecase.BillingUseCase, bot *tele.Bot) *BillingHandler {
+func NewBillingHandler(billingUC usecase.Billing, bot *tele.Bot) BillingHandlerInterface {
 	return &BillingHandler{billingUC: billingUC, Bot: bot}
 }
 

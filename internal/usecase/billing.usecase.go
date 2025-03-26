@@ -7,11 +7,17 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"miniBilling/internal/repository"
 )
-type BillingUseCase struct {
-	billingRepo *repository.BillingRepository
+
+type Billing interface{
+	GetCodeLogin(userCode string) string 
+	UserMongo(teleId int64) (*mongo.Users, error)
 }
 
-func NewBillingUsecase(billingRepo *repository.BillingRepository) *BillingUseCase {
+type BillingUseCase struct {
+	billingRepo repository.BillingRepo
+}
+
+func NewBillingUsecase(billingRepo repository.BillingRepo) Billing {
 	return &BillingUseCase{billingRepo: billingRepo}
 }
 

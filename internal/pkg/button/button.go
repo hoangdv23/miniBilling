@@ -50,7 +50,7 @@ var(
 	BtnContract = tele.InlineButton{
 		Unique: "btn_contract",
 		Text:   "CTC theo Hợp đồng",
-		Data:   "Contract",
+		Data:   "cdrContract",
 	}
 	
 	BtnIN = tele.InlineButton{

@@ -19,7 +19,7 @@ func InitVoiceReport(){
 	db, err := gorm.Open(mysql.Open(s), &gorm.Config{
 		SkipDefaultTransaction: false,
 	})
-	checkErrorPanic(err, "Init mysql Billing error")
+	checkErrorPanic(err, "Init mysql Voice Report error")
 
 
 	if global.VoiceReport == nil {
@@ -28,9 +28,8 @@ func InitVoiceReport(){
 		global.VoiceReport = &Billing.BillingStruct{}
 	}
 	global.Billing.DB = db
-	// global.Logger.Info("Init mysql Billing success")
+	// global.Logger.Info("Init mysql Voice Report success")
 
 
-	//set Pool
 	 setPool()
 }

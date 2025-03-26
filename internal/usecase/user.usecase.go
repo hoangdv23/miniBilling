@@ -11,11 +11,20 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+type Users interface {
+	ListUsers() ([]billing.Users, error)
+	Check_user_billing(username string) string 
+	CheckTeleId(teleId int64) bool 
+	UserMongo(teleId int64) (*mongo.Users, error)
+	UpdateUserMongo(teleId int64, updateData bson.M) error
+	Check_password_billing(username string, pasword string) ([]billing.Users, error)
+	CreateUserMongo(user *mongo.Users) error
+}
 type UserUseCase struct {
-	userRepo *repository.UserRepository
+	userRepo repository.UserRepo
 }
 
-func NewUserUseCase(userRepo *repository.UserRepository) *UserUseCase {
+func NewUserUseCase(userRepo repository.UserRepo) Users {
 	return &UserUseCase{userRepo: userRepo}
 }
 
@@ -24,11 +33,11 @@ func (uc *UserUseCase) ListUsers() ([]billing.Users, error) {
 }
 
 
-func (uc *UserUseCase) Check_user_billing(username string) string{
+func (uc *UserUseCase) Check_user_billing(username string) string {
 	return uc.userRepo.Check_user_billing(username)
 }
 
-func (uc *UserUseCase) CheckTeleId(teleId int64) bool{
+func (uc *UserUseCase) CheckTeleId(teleId int64) bool {
 	var users []mongo.Users
 
 	err := mgm.Coll(&mongo.Users{}).SimpleFind(&users, bson.M{"tele_id": teleId})

@@ -12,12 +12,20 @@ import (
 	tele "gopkg.in/telebot.v4"
 )
 
+type UserHanderInterface interface{
+	Start(c tele.Context) error 
+	ClearAction(c tele.Context) error
+	UserMongo(c tele.Context, teleId int64) (*mongo.Users, error)
+	PreLogin(c tele.Context) error
+	Login(c tele.Context, user_info *mongo.Users, usercode string) error
+	Password(c tele.Context, user_info *mongo.Users, password string) error 
+}
 type UserHandler struct {
-	userUC *usecase.UserUseCase
+	userUC usecase.Users
 	Bot    *tele.Bot
 }
 
-func NewUserHandler(userUC *usecase.UserUseCase, bot *tele.Bot) *UserHandler {
+func NewUserHandler(userUC usecase.Users, bot *tele.Bot) UserHanderInterface {
 	return &UserHandler{userUC: userUC, Bot: bot}
 }
 
@@ -112,7 +120,6 @@ func (h *UserHandler) Login(c tele.Context, user_info *mongo.Users, usercode str
 	}
 	return c.Send("Xin chào,khong tháy user rùi")
 }
-
 
 func (h *UserHandler) Password(c tele.Context, user_info *mongo.Users, password string) error {
 	user_code := user_info.UserCode

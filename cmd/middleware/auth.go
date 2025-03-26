@@ -11,7 +11,7 @@ import (
 	tele "gopkg.in/telebot.v4"
 )
 
-func CheckUserMiddleware(uc *usecase.UserUseCase) tele.MiddlewareFunc {
+func CheckUserMiddleware(uc usecase.Users) tele.MiddlewareFunc {
 	// Danh sách route không cần kiểm tra quyền
 	excludedRoutes := map[string]bool{
 		"/start":   true,
@@ -40,7 +40,7 @@ func CheckUserMiddleware(uc *usecase.UserUseCase) tele.MiddlewareFunc {
 			}
 
 			// Gọi CheckUserConnectBilling để kiểm tra user
-			userInfo, err :=uc.UserMongo(user.ID)
+			userInfo, err := uc.UserMongo(user.ID)
 			if err != nil {
 				log.Println("❌ Lỗi kiểm tra user:", err)
 				return c.Send("❌ Lỗi khi kiểm tra tài khoản. Vui lòng thử lại sau!")

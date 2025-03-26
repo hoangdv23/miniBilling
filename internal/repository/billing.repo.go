@@ -1,19 +1,25 @@
 package repository
 
 import (
-	"miniBilling/global"
 	"log"
+	"gorm.io/gorm"
 )
 
-type BillingRepository struct{}
+type BillingRepo interface {
+	GetCodeLogin(userCode string) (string)
 
-func NewBillineRepository() *BillingRepository  {
-	return &BillingRepository{}
+}
+type BillingRepository struct{
+	billingDB *gorm.DB
+}
+
+func NewBillineRepository(billingDB *gorm.DB) BillingRepo  {
+	return &BillingRepository{billingDB: billingDB}
 }
 
 func (r *BillingRepository) GetCodeLogin(userCode string) (string){
 	var code string
-	err := global.Billing.DB.
+	err := r.billingDB.
 		Table("users").
 		Where("user_code = ?", userCode).
 		Pluck("two_factor_code", &code).Error
