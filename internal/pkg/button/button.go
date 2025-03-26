@@ -30,25 +30,25 @@ var(
 	}
 
 	BtnFixed = tele.InlineButton{
-		Unique: "btn_fixed",
+		Unique: "btn_cdr",
 		Text:   "Chi tiết cước cố định",
 		Data:   "CdrFixed",
 	}
 
 	BtnVAS = tele.InlineButton{
-		Unique: "btn_vas",
+		Unique: "btn_cdr",
 		Text:   "Chi tiết cước GTGT",
 		Data:   "CdrVas",
 	}
 
 	BtnMBS = tele.InlineButton{
-		Unique: "btn_sip",
+		Unique: "btn_cdr",
 		Text:   "Chi tiết cước Mobile SIP",
 		Data:   "CdrSIP",
 	}
 
 	BtnContract = tele.InlineButton{
-		Unique: "btn_contract",
+		Unique: "btn_cdr",
 		Text:   "CTC theo Hợp đồng",
 		Data:   "cdrContract",
 	}

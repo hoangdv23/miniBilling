@@ -46,9 +46,15 @@ var Login_InlineKeys = &tele.ReplyMarkup{
 	},
 }
 // button Cdr // đang lỗi
-var Cdr_InlineKeys = tele.ReplyMarkup{
+var Cdr_InlineKeys = &tele.ReplyMarkup{
 	InlineKeyboard: [][]tele.InlineButton{
 		{BtnFixed, BtnVAS},
 		{BtnMBS, BtnContract},
+	},
+}
+
+var CDR_CallType = &tele.ReplyMarkup{
+	InlineKeyboard: [][]tele.InlineButton{
+		{BtnIN, BtnOUT},
 	},
 }

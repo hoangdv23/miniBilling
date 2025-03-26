@@ -64,6 +64,8 @@ func (h *UserHandler) ClearAction(c tele.Context) error {
 	user := c.Sender()
 	teleId := user.ID
 
+	userMongo,_ := h.userUC.UserMongo(user.ID)
+
 	h.userUC.UpdateUserMongo(teleId,bson.M{
 		"action1": 	nil,
 		"action2": 	nil,
@@ -72,7 +74,8 @@ func (h *UserHandler) ClearAction(c tele.Context) error {
 		"action5": 	nil,
 		"action6": 	nil,
 	})
-	return c.Send("Clear ok")
+	menu := button.GetMainMenu(*userMongo.Role)
+	return c.Send("Clear ok", menu)
 }
 func (h *UserHandler) UserMongo(c tele.Context, teleId int64) (*mongo.Users, error) {
 	return h.userUC.UserMongo(teleId)

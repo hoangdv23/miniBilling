@@ -91,7 +91,9 @@ func NewServer(b *tele.Bot){
 		}else if callback == "btn_intro|button_intro"{
 			return ctx.Send("Xin giới thiệu với bạn, đây là bot mini Billing, phục vụ các tính năng nhanh gọn nhẹ ;D")
 		}else if callback == "btn_cdr|Cdr" {
-			return ctx.Send("Bạn muốn lấy CTC dịch vụ nào?",voiceReportHandler.Cdr)
+			return voiceReportHandler.Cdr(ctx)
+		}else if callback == "btn_cdr|CdrFixed" || callback == "btn_cdr|CdrVas" || callback == "btn_cdr|cdrContract" || callback == "btn_cdr|CdrSIP" {
+			return voiceReportHandler.Cdr_category_code(ctx,callback)
 		}
 		return ctx.Send(callback)
 	})
