@@ -1,12 +1,13 @@
 package config
 
 type Config struct {
-	AppName 		string 	`yaml:"app_name" mapstructure:"app_name"`
-	HttpAddress 	int 	`yaml:"http_address" mapstructure:"http_address"`
-	Bot 			Bot	`yaml:"bot" mapstructure:"bot"`
-	Mysql			*Billing`yaml:"mysql_billing" mapstructure:"mysql_billing"`
-	Mongo_db		*Mongo	`yaml:"mongo" mapstructure:"mongo"`
-	Log 			Logger	`yaml:"log" mapstructure:"log"`
+	AppName 		string 			`yaml:"app_name" mapstructure:"app_name"`
+	HttpAddress 	int 			`yaml:"http_address" mapstructure:"http_address"`
+	Bot 			Bot				`yaml:"bot" mapstructure:"bot"`
+	Mysql			*Billing		`yaml:"mysql_billing" mapstructure:"mysql_billing"`
+	Mysql136		*VoiceReport	`yaml:"mysql_136" mapstructure:"mysql_136"`
+	Mongo_db		*Mongo			`yaml:"mongo" mapstructure:"mongo"`
+	Log 			Logger			`yaml:"log" mapstructure:"log"`
 }
 type Bot struct {
 	Token_bot 	string `yaml:"token_bot" mapstructure:"token_bot"`
@@ -27,6 +28,19 @@ type Billing struct {
 
 }
 
+type VoiceReport struct {
+	Host 		string 		`yaml:"host_136" mapstructure:"host_136"`
+	Port 		int			`yaml:"port_136" mapstructure:"port_136"`
+	Username 	string		`yaml:"username_136" mapstructure:"username_136"`
+	Password 	string		`yaml:"password_136" mapstructure:"password_136"`
+
+	VoiceReport string		`yaml:"db_136" mapstructure:"db_136"`
+
+	MaxIdleConns 		int		`yaml:"maxIdleConns" mapstructure:"maxIdleConns"`
+	MinOpenConns 		int		`yaml:"minOpenConns" mapstructure:"minOpenConns"`
+	MaxOpenConns 		int		`yaml:"maxOpenConns" mapstructure:"maxOpenConns"`
+	ConnMaxLifetime 	int		`yaml:"connMaxLifetime" mapstructure:"connMaxLifetime"`
+}
 type Mongo struct {
 	Url_mongo 	string  	`yaml:"url" mapstructure:"url"`
 	DB_mongo 	string		`yaml:"db_name" mapstructure:"db_name"`

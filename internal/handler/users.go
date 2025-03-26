@@ -149,7 +149,7 @@ func (h *UserHandler) Password(c tele.Context, user_info *mongo.Users, password 
 		if err != nil {
 			return err
 		}
-		return c.Send("Bạn đã đăng nhập thành công", button.Main_superAdmin_InlineKeys)
+		return c.Send("Bạn đã đăng nhập thành công", button.GetMainMenu(role))
 	}
 
 	return c.Send("k vào điều kiện")

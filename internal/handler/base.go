@@ -84,6 +84,8 @@ func NewServer(b *tele.Bot){
 			return billingHander.GetCodeLogin(ctx)
 		}else if callback == "btn_intro|button_intro"{
 			return ctx.Send("Xin giới thiệu với bạn, đây là bot mini Billing, phục vụ các tính năng nhanh gọn nhẹ ;D")
+		}else if callback == "btn_cdr|Cdr" {
+			return ctx.Send("Bạn muốn lấy CTC dịch vụ nào?",button.Cdr_InlineKeys)
 		}
 		return ctx.Send(callback)
 	})

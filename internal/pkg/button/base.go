@@ -10,7 +10,8 @@ func GetMainMenu(role string) *tele.ReplyMarkup {
 	switch role {
 	case "super-admin":
 		menu.InlineKeyboard = [][]tele.InlineButton{
-			{BtnIntro, BtnLoginCode},
+			{BtnIntro,BtnLoginCode},
+			{BtnCdr,BtnReport},
 		}
 	case "admin": //admin
 		menu.InlineKeyboard = [][]tele.InlineButton{
@@ -44,9 +45,10 @@ var Login_InlineKeys = &tele.ReplyMarkup{
 		{BtnLogin},
 	},
 }
-// button intro
-var Main_superAdmin_InlineKeys = &tele.ReplyMarkup{
+// button Cdr
+var Cdr_InlineKeys = &tele.ReplyMarkup{
 	InlineKeyboard: [][]tele.InlineButton{
-		{BtnIntro},
+		{BtnFixed,BtnVAS},
+		{BtnMBS,BtnContract},
 	},
 }
