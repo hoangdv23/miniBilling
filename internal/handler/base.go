@@ -94,8 +94,17 @@ func NewServer(b *tele.Bot){
 			return voiceReportHandler.Cdr(ctx)
 		}else if callback == "btn_cdr|CdrFixed" || callback == "btn_cdr|CdrVas" || callback == "btn_cdr|cdrContract" || callback == "btn_cdr|CdrSIP" {
 			return voiceReportHandler.Cdr_category_code(ctx,callback)
+		}else if callback == "VIETTEL" || callback == "VNPT" || 
+				callback == "GPC" || callback == "FPT" ||
+				callback == "ITEL" || callback == "VMS" ||
+				callback == "VNM" || callback == "CMC" ||
+				callback == "MOBICAST" || callback == "GTEL" ||
+				callback == "ALL" || callback == "HTC" {
+			return voiceReportHandler.CdrTelco(ctx,callback)
+		}else if callback == "btn_CallIn|CdrCallIn" || callback == "btn_CallIn|CdrCallOUT"  {
+			return voiceReportHandler.CdrCallType(ctx,callback)
 		}
-		return ctx.Send(callback)
+		return ctx.Send("Không rõ button: ",callback)
 	})
 
 }
