@@ -10,8 +10,8 @@ import (
 
 
 type VoiceReport interface{
-	CdrOUTVas( telco string, services string , time string) (string, string)
-	CdrINVas(telco string, services string, time string) (string, string)
+	CdrOUTVas( telco string, services string , time string) (string)
+	CdrINVas(telco string, services string, time string) (string)
 }
 
 type VoiceReportUsecase struct {
@@ -22,7 +22,7 @@ func NewVoiceReportUsecase(voiceReport repository.VoiceReport) VoiceReport {
 	return &VoiceReportUsecase{report: voiceReport}
 }
 
-func (uc *VoiceReportUsecase) CdrOUTVas( telco string, services string, time string) (string, string)  {
+func (uc *VoiceReportUsecase) CdrOUTVas( telco string, services string, time string) (string)  {
 	// time := chuyển đổi từ string sang month year
 		// Parse tháng/năm
 		month, year, _ := helpers.ParseMonthYear(time)
@@ -42,7 +42,7 @@ func (uc *VoiceReportUsecase) CdrOUTVas( telco string, services string, time str
 	
 		if err != nil {
 			fmt.Println("❌ Lỗi khi lấy dữ liệu CDR:", err)
-			return "", "error"
+			return ""
 		}
 	
 		// Xử lý dữ liệu
@@ -60,13 +60,13 @@ func (uc *VoiceReportUsecase) CdrOUTVas( telco string, services string, time str
 			cdrData = append(cdrData, row)
 		}
 	
-		// Debug kết quả
-		fmt.Println("✅ Dữ liệu CDR:", cdrData)
-	
-		return "ok OUT Vas", ""
+		fileName := fmt.Sprintf("CTC_Digitel_call_%s_%s_%d_%d.xlsx",services,telco,month,year)
+		helpers.Export_data_to_excel(fileName,"OUT",cdrData)
+
+		return fileName
 }
 
-func (uc *VoiceReportUsecase) CdrINVas(telco string, services string, time string) (string, string) {
+func (uc *VoiceReportUsecase) CdrINVas(telco string, services string, time string) (string) {
 	// Parse tháng/năm
 	month, year, _ := helpers.ParseMonthYear(time)
 	var (
@@ -85,7 +85,7 @@ func (uc *VoiceReportUsecase) CdrINVas(telco string, services string, time strin
 
 	if err != nil {
 		fmt.Println("❌ Lỗi khi lấy dữ liệu CDR:", err)
-		return "", "error"
+		return ""
 	}
 
 	// Xử lý dữ liệu
@@ -103,8 +103,8 @@ func (uc *VoiceReportUsecase) CdrINVas(telco string, services string, time strin
 		cdrData = append(cdrData, row)
 	}
 
-	// Debug kết quả
-	fmt.Println("✅ Dữ liệu CDR:", cdrData)
+	fileName := fmt.Sprintf("CTC_Digitel_call_%s_%s_%d_%d.xlsx",services,telco,month,year)
+	helpers.Export_data_to_excel(fileName,"IN",cdrData)
 
-	return "ok IN Vas", ""
+	return fileName
 }

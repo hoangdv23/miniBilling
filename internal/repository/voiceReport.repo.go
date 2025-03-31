@@ -106,10 +106,6 @@ func (r *VoiceReportRepository) GetCdrOutAllVas(telco string, year int, month in
 			Where("(callee LIKE ? OR callee LIKE ? OR callee LIKE ? OR callee LIKE ?) AND call_type = ?",
 				"1800%", "841800%", "1900%", "841900%", "OUT_VAS")
 
-		if telco != "" {
-			query = query.Where("callee_gw LIKE ?", "%"+telco+"%")
-		}
-
 		err := query.Find(&cdrRecords).Error
 		if err != nil {
 			log.Printf("Error querying table %s: %v", tableName, err)
@@ -132,10 +128,6 @@ func (r *VoiceReportRepository) GetCdrInAllVas(telco string, year int, month int
 	query := global.VoiceReport.DB.
 		Table(tableName).
 		Select("caller", "callee", "time", "duration", "minute", "cost", "caller_object", "caller_gw")
-
-	if telco != "" {
-		query = query.Where("caller_gw LIKE ?", "%"+telco+"%")
-	}
 
 	err := query.Find(&result).Error
 	if err != nil {

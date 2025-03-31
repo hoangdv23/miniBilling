@@ -28,8 +28,6 @@ func NewServer(b *tele.Bot){
 	billingRepo := repository.NewBillineRepository(global.Billing.DB)
 	billingUC := usecase.NewBillingUsecase(billingRepo)
 
-	fmt.Printf("VoiceReport DB: %+v\n", global.VoiceReport.DB)
-	fmt.Printf("Billing DB: %+v\n", global.Billing.DB)
 	voiceReportRepo := repository.NewVoiceReportRepository(global.VoiceReport.DB)
 	voiceReportUC := usecase.NewVoiceReportUsecase(voiceReportRepo)
 

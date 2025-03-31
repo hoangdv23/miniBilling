@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"miniBilling/internal/pkg/button"
 	"miniBilling/internal/usecase"
-
 	"go.mongodb.org/mongo-driver/bson"
 	tele "gopkg.in/telebot.v4"
 )
@@ -116,33 +115,46 @@ func (h *Report136handler) CdrCallType(c tele.Context, callback string) error {
 }
 // xử lý và xuất excel đoạn này rồi đấy
 func (h *Report136handler) CdrMonth(c tele.Context, callback string) error {
-	fmt.Println("hmmm vào cdrMonth")
+	fmt.Println("✅ Đã vào CdrMonth")
 
-	var linkfile string
 	user := c.Sender()
-	userMongo,_ := h.UsersUC.UserMongo(user.ID)
+	userMongo, _ := h.UsersUC.UserMongo(user.ID)
+
 	if userMongo.Action2 == nil || userMongo.Action3 == nil || userMongo.Action4 == nil {
 		return c.Send("❌ Thiếu thông tin Action trong hệ thống, vui lòng thao tác lại từ đầu.")
 	}
-	
-	services := *userMongo.Action2
-	telco    := *userMongo.Action3
-	callType := *userMongo.Action4
 
-	if services == "1900" || services == "1800"{
-		if callType == "OUT"{
-			fmt.Println("ok vas OUT")
-			// gọi hàm xử lý cdr  OUT
-			linkfile, _ = h.VoicerReport.CdrOUTVas(telco,services,callback)
-		}else if callType == "IN"{
-			fmt.Println("ok vas IN")
-			linkfile, _ = h.VoicerReport.CdrINVas(telco,services,callback)
-		}else{
-			linkfile = "not ok VAS"
+	services := *userMongo.Action2 // VAS: 1800/1900
+	telco := *userMongo.Action3    // Nhà mạng
+	callType := *userMongo.Action4 // IN / OUT
+
+	var (
+		fileName string
+		text     string
+	)
+
+	if services == "1800" || services == "1900" {
+		switch callType {
+		case "OUT":
+			fileName = h.VoicerReport.CdrOUTVas(telco, services, callback)
+			text = fmt.Sprintf("📄 Bot gửi file CTC Digitel gọi %s %s tháng %s", services, telco, callback)
+		case "IN":
+			fileName = h.VoicerReport.CdrINVas(telco, services, callback)
+			text = fmt.Sprintf("📄 Bot gửi file CTC %s %s gọi vào Digitel tháng %s", services, telco, callback)
+		default:
+			return c.Send("⚠️ Kiểu gọi không hợp lệ (phải là IN hoặc OUT).")
 		}
-	}else{
-		linkfile = "not ok"
+	} else {
+		return c.Send("⚠️ Chỉ hỗ trợ dịch vụ 1800 hoặc 1900.")
 	}
-	
-	return c.Send(linkfile)
+
+	if fileName == "" {
+		return c.Send("❌ Không thể tạo file, vui lòng thử lại.")
+	}
+	file := &tele.Document{
+		File:     tele.FromDisk("/root/mini_billing/storages/assets/" + fileName),
+		FileName: fileName,
+		Caption:  text,
+	}
+	return c.Send(file)
 }

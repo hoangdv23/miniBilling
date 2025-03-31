@@ -6,9 +6,9 @@ type CdrRecord struct {
 	ID              uint64    `gorm:"column:id;primaryKey;autoIncrement"`
 	Server          string    `gorm:"column:server;type:varchar(50);not null;default:''" json:"server"`
 	CdrID           string    `gorm:"column:CdrID;type:varchar(150);not null;default:''" json:"cdr_id"`
-	Caller          string    `gorm:"column:Caller;type:varchar(20);not null;default:''" json:"caller"`
-	Callee          string    `gorm:"column:Callee;type:varchar(20);not null;default:''" json:"callee"`
-	Duration        *uint     `gorm:"column:duration" json:"duration"`
+	Caller          string    `gorm:"column:caller;type:varchar(20);not null;default:''" json:"caller"`
+	Callee          string    `gorm:"column:callee;type:varchar(20);not null;default:''" json:"callee"`
+	Duration        uint     `gorm:"column:duration" json:"duration"`
 	Time            time.Time `gorm:"column:time;not null" json:"time"`
 	TimeEnd         *time.Time `gorm:"column:time_end" json:"time_end"`
 	Minute          uint      `gorm:"column:minute;default:0" json:"minute"`
