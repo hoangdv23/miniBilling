@@ -15,7 +15,7 @@ type BillingStruct struct {
 	MaxOpenConns    int `mapstructure:"maxOpenConns"`
 	ConnMaxLifetime int `mapstructure:"connMaxLifetime"`
 
-	DB              *gorm.DB // Thêm trường này để lưu trữ kết nối database
+	DB              *gorm.DB 
 }
 
 
@@ -32,11 +32,21 @@ type DCNStruct struct {
 	MaxOpenConns    int `mapstructure:"maxOpenConns"`
 	ConnMaxLifetime int `mapstructure:"connMaxLifetime"`
 
-	DB              *gorm.DB // Thêm trường này để lưu trữ kết nối database
+	DB              *gorm.DB 
 }
 
 type VoiceReportStruct struct {
+	Host            string `mapstructure:"host"`
+	Port            string `mapstructure:"port"`
+	Username        string `mapstructure:"username"`
+	Password        string `mapstructure:"password"`
 
+	VoiceReport     string `mapstructure:"VoiceReport"`
 
-	DB              *gorm.DB // Thêm trường này để lưu trữ kết nối database
+	MaxIdleConns    int `mapstructure:"maxIdleConns"`
+	MinOpenConns    int `mapstructure:"minOpenConns"`
+	MaxOpenConns    int `mapstructure:"maxOpenConns"`
+	ConnMaxLifetime int `mapstructure:"connMaxLifetime"`
+
+	DB              *gorm.DB 
 }

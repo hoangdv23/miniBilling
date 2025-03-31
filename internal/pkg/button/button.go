@@ -13,23 +13,11 @@ func DynamicButton(text string,data string) tele.InlineButton {
 	}
 }
 //============= BUTTON MONTH ===================================
-func GetThis_month() string {
-	now := time.Now()
-	currentMonth := now.Month()
-	currentYear := now.Year()
-	return fmt.Sprintf("%02d/%d", currentMonth, currentYear)
-}
-
-func GetLastMonth() string {
-	now := time.Now()
-	lastMonth := now.AddDate(0, -1, 0)
-	return fmt.Sprintf("%02d/%d", lastMonth.Month(), lastMonth.Year())
-}
-
-func GetLast2Month() string {
-	now := time.Now()
-	lastMonth := now.AddDate(0, -2, 0)
-	return fmt.Sprintf("%02d/%d", lastMonth.Month(), lastMonth.Year())
+func GetMonthOffsetSafe(offset int) string {
+	// Luôn dùng ngày 15 để tránh lỗi lùi tháng như trên
+	base := time.Date(time.Now().Year(), time.Now().Month(), 15, 0, 0, 0, 0, time.Local)
+	t := base.AddDate(0, offset, 0)
+	return fmt.Sprintf("%02d/%d", t.Month(), t.Year())
 }
 
 
@@ -62,7 +50,7 @@ var(
 
 	BtnFixed = tele.InlineButton{
 		Unique: "btn_cdr",
-		Text:   "Chi tiết cước cố định",
+		Text:   "CTC cố định",
 		Data:   "CdrFixed",
 	}
 
@@ -80,12 +68,12 @@ var(
 
 	BtnMBS = tele.InlineButton{
 		Unique: "btn_cdr",
-		Text:   "Chi tiết cước Mobile SIP",
+		Text:   "CTC Mobile SIP",
 		Data:   "CdrSIP",
 	}
 	BtnCdrNumber = tele.InlineButton{
 		Unique: "btn_cdr",
-		Text:   "Chi tiết cước theo đầu số",
+		Text:   "CTC theo đầu số",
 		Data:   "Number",
 	}
 
@@ -171,9 +159,9 @@ var(
 		Unique:   "ALL",
 	}
 	
-	unique_this_month = DynamicButton(GetThis_month(),GetThis_month())
-	unique_last_month = DynamicButton(GetLastMonth(),GetLastMonth())
-	unique_last_2_month = DynamicButton(GetLast2Month(),GetLast2Month())
+	unique_this_month = DynamicButton(GetMonthOffsetSafe(0),GetMonthOffsetSafe(0))
+	unique_last_month = DynamicButton(GetMonthOffsetSafe(-1),GetMonthOffsetSafe(-1))
+	unique_last_2_month = DynamicButton(GetMonthOffsetSafe(-2),GetMonthOffsetSafe(-2))
 
 	// ================== BUTTON REPORT ================================
 	BtnReport= tele.InlineButton{

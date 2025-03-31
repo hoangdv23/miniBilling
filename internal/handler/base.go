@@ -28,6 +28,8 @@ func NewServer(b *tele.Bot){
 	billingRepo := repository.NewBillineRepository(global.Billing.DB)
 	billingUC := usecase.NewBillingUsecase(billingRepo)
 
+	fmt.Printf("VoiceReport DB: %+v\n", global.VoiceReport.DB)
+	fmt.Printf("Billing DB: %+v\n", global.Billing.DB)
 	voiceReportRepo := repository.NewVoiceReportRepository(global.VoiceReport.DB)
 	voiceReportUC := usecase.NewVoiceReportUsecase(voiceReportRepo)
 
@@ -92,7 +94,7 @@ func NewServer(b *tele.Bot){
 			return ctx.Send("Xin giới thiệu với bạn, đây là bot mini Billing, phục vụ các tính năng nhanh gọn nhẹ ;D")
 		}else if callback == "btn_cdr|Cdr" {
 			return voiceReportHandler.Cdr(ctx)
-		}else if callback == "btn_cdr|CdrFixed" || callback == "btn_cdr|CdrVas" || callback == "btn_cdr|cdrContract" || callback == "btn_cdr|CdrSIP" {
+		}else if callback == "btn_cdr|CdrFixed" || callback == "btn_cdr|Cdr1800"|| callback == "btn_cdr|Cdr1900"  || callback == "btn_cdr|cdrContract" || callback == "btn_cdr|CdrSIP" {
 			return voiceReportHandler.Cdr_category_code(ctx,callback)
 		}else if callback == "VIETTEL" || callback == "VNPT" || 
 				callback == "GPC" || callback == "FPT" ||
@@ -101,9 +103,14 @@ func NewServer(b *tele.Bot){
 				callback == "MOBICAST" || callback == "GTEL" ||
 				callback == "ALL" || callback == "HTC" {
 			return voiceReportHandler.CdrTelco(ctx,callback)
-		}else if callback == "btn_CallIn|CdrCallIn" || callback == "btn_CallIn|CdrCallOUT"  {
+		}else if callback == "btn_CallIn|CdrCallIn" || callback == "btn_CallOut|CdrCallOUT"  {
 			return voiceReportHandler.CdrCallType(ctx,callback)
-		}
+		}else if callback == button.GetMonthOffsetSafe(0) || 
+				callback == button.GetMonthOffsetSafe(-1) ||
+				callback == button.GetMonthOffsetSafe(-2) {
+					// fmt.Println("đã vào tháng")
+					return voiceReportHandler.CdrMonth(ctx,callback)
+				}
 		return ctx.Send("Không rõ button: ",callback)
 	})
 

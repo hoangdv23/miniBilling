@@ -70,7 +70,13 @@ func GetTelcoByServices(services string) *tele.ReplyMarkup {
 		// 	menu.InlineKeyboard = [][]tele.InlineButton{
 		// 		{BtnIntro,BtnLoginCode},
 		// 	}
-		case "VAS":
+		case "1900":
+			menu.InlineKeyboard = [][]tele.InlineButton{
+				{BtnAll,BtnViettel,BtnCMC},
+				{BtnVnpt,BtnCMC,BtnFPT},
+				{BtnMBC,BtnGTEL,BtnHTC},
+			}
+		case "1800":
 			menu.InlineKeyboard = [][]tele.InlineButton{
 				{BtnAll,BtnViettel,BtnCMC},
 				{BtnVnpt,BtnCMC,BtnFPT},

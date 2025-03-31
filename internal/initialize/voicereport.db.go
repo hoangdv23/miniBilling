@@ -25,10 +25,9 @@ func InitVoiceReport(){
 	if global.VoiceReport == nil {
 		fmt.Println("global.VoiceReport is nil, initializing...")
 		global.Logger.Error("global.VoiceReport is nil, initializing...")
-		global.VoiceReport = &Billing.BillingStruct{}
+		global.VoiceReport = &Billing.VoiceReportStruct{}
 	}
-	global.Billing.DB = db
-	// global.Logger.Info("Init mysql Voice Report success")
+	global.VoiceReport.DB = db
 
 
 	 setPool()

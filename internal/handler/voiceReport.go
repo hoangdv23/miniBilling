@@ -14,7 +14,7 @@ type Report136HanderInterface interface {
 	Cdr_category_code(c tele.Context, callback string) error 
 	CdrCallType(c tele.Context, callback string) error 
 	CdrTelco(c tele.Context, callback string) error
-	// CdrMonth(c tele.Context, callback string) error
+	CdrMonth(c tele.Context, callback string) error
 }
 
 type Report136handler struct {
@@ -47,21 +47,18 @@ func (h *Report136handler) Cdr_category_code(c tele.Context, callback string) er
 	var action2 string
 	user := c.Sender()
 	teleId := user.ID
+	fmt.Println(callback)
 	 if callback == "btn_cdr|CdrVas" {
 		action2 = "VAS"
-	}else if callback == "btn_cdr|CdrSIP" {
-		action2 = "SIP"
+	}else if callback == "btn_cdr|Cdr1900" {
+		action2 = "1900"
+	}else if callback == "btn_cdr|Cdr1800" {
+		action2 = "1800"
 	}else if callback == "btn_cdr|cdrContract" {
 		action2 = "CONTRACT" 
 	}else if callback == "btn_cdr|Number" {
 		action2 = "NUMBER" 
 		c.Send("Vui lòng chọn Call OUT hoặc Call IN", button.CDR_CallType)
-	}else
-	// else if callback == "btn_cdr|CdrFixed" {
-	// 	action2 = "FIXED"
-	// }
-	{
-		return	c.Send("Chưa hỗ trợ tính năng này, hãy báo admin. Vui lòng /start để chọn lại menu")
 	}
 	h.UsersUC.UpdateUserMongo(teleId,bson.M{
 		"action1": 	"CDR",
@@ -118,7 +115,34 @@ func (h *Report136handler) CdrCallType(c tele.Context, callback string) error {
 	return	c.Edit(message,button.BtnMonth)
 }
 // xử lý và xuất excel đoạn này rồi đấy
-// func (h *Report136handler) CdrMonth(c tele.Context, callback string) error {
+func (h *Report136handler) CdrMonth(c tele.Context, callback string) error {
+	fmt.Println("hmmm vào cdrMonth")
 
-// }
+	var linkfile string
+	user := c.Sender()
+	userMongo,_ := h.UsersUC.UserMongo(user.ID)
+	if userMongo.Action2 == nil || userMongo.Action3 == nil || userMongo.Action4 == nil {
+		return c.Send("❌ Thiếu thông tin Action trong hệ thống, vui lòng thao tác lại từ đầu.")
+	}
+	
+	services := *userMongo.Action2
+	telco    := *userMongo.Action3
+	callType := *userMongo.Action4
 
+	if services == "1900" || services == "1800"{
+		if callType == "OUT"{
+			fmt.Println("ok vas OUT")
+			// gọi hàm xử lý cdr  OUT
+			linkfile, _ = h.VoicerReport.CdrOUTVas(telco,services,callback)
+		}else if callType == "IN"{
+			fmt.Println("ok vas IN")
+			linkfile, _ = h.VoicerReport.CdrINVas(telco,services,callback)
+		}else{
+			linkfile = "not ok VAS"
+		}
+	}else{
+		linkfile = "not ok"
+	}
+	
+	return c.Send(linkfile)
+}

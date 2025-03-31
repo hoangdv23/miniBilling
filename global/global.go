@@ -8,11 +8,11 @@ import (
 )
 
 var(
-	Config *config.Config
-	Logger *logger.LoggerZap
-	Bot 	*bot.TeleBot
-	Billing *mysql.BillingStruct
-	VoiceReport *mysql.BillingStruct
-	DCN 	*mysql.DCNStruct
+	Config 		*config.Config
+	Logger 		*logger.LoggerZap
+	Bot 		*bot.TeleBot
+	Billing 	*mysql.BillingStruct
+	VoiceReport *mysql.VoiceReportStruct
+	DCN 		*mysql.DCNStruct
 	// Mongo	*
 )
