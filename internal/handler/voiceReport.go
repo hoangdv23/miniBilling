@@ -130,16 +130,17 @@ func (h *Report136handler) CdrMonth(c tele.Context, callback string) error {
 
 	var (
 		fileName string
+		fileResult string
 		text     string
 	)
 
 	if services == "1800" || services == "1900" {
 		switch callType {
 		case "OUT":
-			fileName = h.VoicerReport.CdrOUTVas(telco, services, callback)
+			fileResult,fileName = h.VoicerReport.CdrOUTVas(telco, services, callback)
 			text = fmt.Sprintf("📄 Bot gửi file CTC Digitel gọi %s %s tháng %s", services, telco, callback)
 		case "IN":
-			fileName = h.VoicerReport.CdrINVas(telco, services, callback)
+			fileResult,fileName = h.VoicerReport.CdrINVas(telco, services, callback)
 			text = fmt.Sprintf("📄 Bot gửi file CTC %s %s gọi vào Digitel tháng %s", services, telco, callback)
 		default:
 			return c.Send("⚠️ Kiểu gọi không hợp lệ (phải là IN hoặc OUT).")
@@ -152,7 +153,7 @@ func (h *Report136handler) CdrMonth(c tele.Context, callback string) error {
 		return c.Send("❌ Không thể tạo file, vui lòng thử lại.")
 	}
 	file := &tele.Document{
-		File:     tele.FromDisk("/root/mini_billing/storages/assets/" + fileName),
+		File:     tele.FromDisk(fileResult),
 		FileName: fileName,
 		Caption:  text,
 	}

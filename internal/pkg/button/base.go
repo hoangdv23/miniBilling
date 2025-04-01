@@ -30,7 +30,8 @@ func GetMainMenu(role string) *tele.ReplyMarkup {
 		}
 	case "Technician": // Kỹ thuật
 		menu.InlineKeyboard = [][]tele.InlineButton{
-			{BtnIntro,BtnLoginCode}, 
+			{BtnIntro,BtnLoginCode},
+			{BtnCdr,BtnReport},
 		}
 	default:
 		menu.InlineKeyboard = [][]tele.InlineButton{
