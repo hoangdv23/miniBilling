@@ -19,11 +19,15 @@ func Export_data_to_excel(fileName string, call_type string,data [][]string) (st
 	f.SetCellValue(sheetName, "D1", "Duration")
 	f.SetCellValue(sheetName, "E1", "Minute")
 	f.SetCellValue(sheetName, "F1", "Cost")
+	f.SetCellValue(sheetName, "G1", "CallType")
 
 	f.SetColWidth(sheetName, "A", "B", 14)
 	f.SetColWidth(sheetName, "C", "C", 22)
-	f.SetColWidth(sheetName, "D", "F", 9)
-	f.SetColWidth(sheetName, "G", "G", 23)
+	f.SetColWidth(sheetName, "D", "G", 9)
+	f.SetColWidth(sheetName, "H", "H", 23)
+
+	
+
 	// Tạo style với màu nền
 	headerStyle, err := f.NewStyle(&excelize.Style{
 		Fill: excelize.Fill{
@@ -44,7 +48,7 @@ func Export_data_to_excel(fileName string, call_type string,data [][]string) (st
 	if err != nil {
 		fmt.Println("❌ Lỗi tạo style:", err)
 	}
-	_ = f.SetCellStyle(sheetName, "A1", "g1", headerStyle)
+	_ = f.SetCellStyle(sheetName, "A1", "G1", headerStyle)
 
 	style, err := f.NewStyle(&excelize.Style{
 		Fill: excelize.Fill{Type: "pattern", Color: []string{"ccffff"}, Pattern: 1},
@@ -53,9 +57,16 @@ func Export_data_to_excel(fileName string, call_type string,data [][]string) (st
 		fmt.Println(err)
 	}
 	if call_type == "OUT" {
-		f.SetCellValue(sheetName, "G1", "Callee GateWay")
+		f.SetCellValue(sheetName, "H1", "Callee GateWay")
 	}else if call_type == "IN" {
-		f.SetCellValue(sheetName, "G1", "Caller GateWay")
+		f.SetCellValue(sheetName, "H1", "Caller GateWay")
+	}else if call_type == "ALL"{
+		f.SetColWidth(sheetName, "I", "K", 23)
+		f.SetCellValue(sheetName, "H1", "Caller_obj")
+		f.SetCellValue(sheetName, "I1", "Callee_obj")
+		f.SetCellValue(sheetName, "J1", "Caller_GW")
+		f.SetCellValue(sheetName, "K1", "Callee_GW")
+		_ = f.SetCellStyle(sheetName, "A1", "K1", headerStyle)
 	}
 	for i, row := range data {
 		for j, cell := range row {
@@ -95,9 +106,9 @@ func Export_data_to_excel(fileName string, call_type string,data [][]string) (st
 
 		_ = f.SetCellValue(sheetName, footerCell, footerText)
 		_ = f.SetRowHeight(sheetName, footerRow, 60)
-		f.AutoFilter(sheetName,"A1:G1",[]excelize.AutoFilterOptions{})
+		f.AutoFilter(sheetName,"A1:K1",[]excelize.AutoFilterOptions{})
 		f.SetActiveSheet(index)
-		filepath := "/root/mini_billing/storages/assets/" + fileName + ".xlsx";
+		filepath := "/root/mini_billing/storages/assets/" + fileName ;
 
 	if err := f.SaveAs(filepath); err != nil {
 		log.Fatalf("Lỗi khi lưu file Excel: %v", err)

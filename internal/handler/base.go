@@ -106,9 +106,13 @@ func NewServer(b *tele.Bot){
 		}else if callback == button.GetMonthOffsetSafe(0) || 
 				callback == button.GetMonthOffsetSafe(-1) ||
 				callback == button.GetMonthOffsetSafe(-2) {
-					// fmt.Println("đã vào tháng")
-					return voiceReportHandler.CdrMonth(ctx,callback)
-				}
+					// fmt.Println("éc éc")
+			return voiceReportHandler.CdrMonth(ctx,callback)
+		}else if callback == "btn_report|ReportQuantity"{
+			return voiceReportHandler.Report(ctx)
+		}else if callback == "btn_report|BigCus3"{
+			return voiceReportHandler.Report3BigCustomer(ctx)
+		}
 		return ctx.Send("Không rõ button: ",callback)
 	})
 

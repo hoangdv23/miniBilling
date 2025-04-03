@@ -169,5 +169,35 @@ var(
 		Text:   "Báo cáo sản lượng",
 		Data:   "ReportQuantity",
 	}
+
+	BtnReport_3_BigCus = tele.InlineButton{
+		Unique: "btn_report",
+		Text:   "Sản lượng 3 KH lớn",
+		Data:   "BigCus3",
+	}
+
+	BtnReportRecord = tele.InlineButton{
+		Unique: "btn_report",
+		Text:   "Sản lượng Record",
+		Data:   "Record",
+	}
+
+	BtnReportTelco = tele.InlineButton{
+		Unique: "btn_report",
+		Text:   "Sản lượng theo nhà mạng",
+		Data:   "Telco",
+	}
+
+	BtnReportContractPostPaid = tele.InlineButton{
+		Unique: "btn_report",
+		Text:   "Báo cáo KH trả sau",
+		Data:   "CustomerPostpaid",
+	}
+
+	// BtnReportInternational = tele.InlineButton{
+	// 	Unique: "btn_report",
+	// 	Text:   "Báo cáo KH trả sau",
+	// 	Data:   "International",
+	// }
 ) 
 

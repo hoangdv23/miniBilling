@@ -7,11 +7,17 @@ import (
 	"miniBilling/internal/repository"
 )
 
-
+var (
+	cdrRecords []billing.CdrRecord
+	err        error
+	cdrData    [][]string
+)
 
 type VoiceReport interface{
 	CdrOUTVas( telco string, services string , time string) (string,string)
 	CdrINVas(telco string, services string, time string) (string,string)
+	CdrSIP(time string) (string, string)
+	Report3BigCustomer(time string) (string, string)
 }
 
 type VoiceReportUsecase struct {
@@ -26,12 +32,6 @@ func (uc *VoiceReportUsecase) CdrOUTVas( telco string, services string, time str
 	// time := chuyển đổi từ string sang month year
 		// Parse tháng/năm
 		month, year, _ := helpers.ParseMonthYear(time)
-
-		var (
-			cdrRecords []billing.CdrRecord
-			err        error
-			cdrData    [][]string
-		)
 	
 		// Lấy dữ liệu theo dịch vụ
 		if services == "1900" || services == "1800" {
@@ -54,8 +54,9 @@ func (uc *VoiceReportUsecase) CdrOUTVas( telco string, services string, time str
 				timeFormatted,
 				fmt.Sprintf("%d", record.Duration),
 				fmt.Sprintf("%d", record.Minute),
-				fmt.Sprintf("%.2f", record.Cost),
-				record.CallerGw,
+				fmt.Sprintf("%f", record.Cost),
+				record.CallType,
+				record.CalleeGw,
 			}
 			cdrData = append(cdrData, row)
 		}
@@ -69,11 +70,6 @@ func (uc *VoiceReportUsecase) CdrOUTVas( telco string, services string, time str
 func (uc *VoiceReportUsecase) CdrINVas(telco string, services string, time string) (string,string) {
 	// Parse tháng/năm
 	month, year, _ := helpers.ParseMonthYear(time)
-	var (
-		cdrRecords []billing.CdrRecord
-		err        error
-		cdrData    [][]string
-	)
 
 	// Lấy dữ liệu theo dịch vụ
 	if services == "1900" || services == "1800" {
@@ -98,6 +94,7 @@ func (uc *VoiceReportUsecase) CdrINVas(telco string, services string, time strin
 			fmt.Sprintf("%d", record.Duration),
 			fmt.Sprintf("%d", record.Minute),
 			fmt.Sprintf("%.2f", record.Cost),
+			record.CallType,
 			record.CallerGw,
 		}
 		cdrData = append(cdrData, row)
@@ -107,4 +104,51 @@ func (uc *VoiceReportUsecase) CdrINVas(telco string, services string, time strin
 	fileResult := helpers.Export_data_to_excel(fileName,"IN",cdrData)
 
 	return fileResult,fileName
+}
+
+func (uc *VoiceReportUsecase) CdrSIP(time string) (string, string){
+
+	month, year, _ := helpers.ParseMonthYear(time)
+	cdrRecords, err = uc.report.GetCdrtSIP(year, month)
+
+	if err != nil {
+		fmt.Println("❌ Lỗi khi lấy dữ liệu CDR:", err)
+		return "",""
+	}
+
+	// Xử lý dữ liệu
+	for _, record := range cdrRecords {
+		timeFormatted := record.Time.Format("2006-01-02 15:04:05")
+		row := []string{
+			record.Caller,
+			record.Callee,
+			timeFormatted,
+			fmt.Sprintf("%d", record.Duration),
+			fmt.Sprintf("%d", record.Minute),
+			fmt.Sprintf("%.2f", record.Cost),
+			record.CallType,
+			record.CallerObject,
+			record.CalleeObject,
+			record.CallerGw,
+			record.CalleeGw,
+		}
+		cdrData = append(cdrData, row)
+	}
+	fileName := fmt.Sprintf("CTC_MBS_%d_%d.xlsx",month,year)
+	fileResult := helpers.Export_data_to_excel(fileName,"ALL",cdrData)
+
+	return fileResult,fileName
+}
+
+func (uc *VoiceReportUsecase) Report3BigCustomer(time string) (string, string){
+	fmt.Println("hehe2")
+	month, year, _ := helpers.ParseMonthYear(time)
+	report, err := uc.report.GetReport3BigCustomer(year,month)
+	fmt.Println("sao ?")
+	if err != nil {
+		fmt.Println("❌ Lỗi khi lấy dữ liệu CDR:", err)
+		return "",""
+	}
+	 fmt.Println(report)
+	 return "nil","nil"
 }

@@ -19,6 +19,7 @@ type Users interface {
 	UpdateUserMongo(teleId int64, updateData bson.M) error
 	Check_password_billing(username string, pasword string) ([]billing.Users, error)
 	CreateUserMongo(user *mongo.Users) error
+	InsertLog(logInfo *mongo.Logs) error
 }
 type UserUseCase struct {
 	userRepo repository.UserRepo
@@ -94,6 +95,18 @@ func (uc *UserUseCase) CreateUserMongo(user *mongo.Users) error {
 
 	// Thêm user vào MongoDB
 	res, err := collection.InsertOne(mgm.Ctx(), user)
+	if err != nil {
+		log.Println("❌ Lỗi khi tạo user:", err)
+		return err
+	}
+
+	log.Printf("✅ User được tạo với ID: %v\n", res.InsertedID)
+	return nil
+}
+
+func (uc *UserUseCase) InsertLog(logInfo *mongo.Logs) error {
+	collection := mgm.Coll(&mongo.Logs{})
+	res, err := collection.InsertOne(mgm.Ctx(), logInfo)
 	if err != nil {
 		log.Println("❌ Lỗi khi tạo user:", err)
 		return err

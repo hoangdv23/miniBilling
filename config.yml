@@ -10,9 +10,9 @@ log:
   compress:   true
 
 bot:
-  token_bot: 7419541452:AAEl6VcNgwbquEZKupYYIcb-bvQmj56XctM
-  #7419541452:AAEl6VcNgwbquEZKupYYIcb-bvQmj56XctM
-  #7195471412:AAHVrYX2NZH8NoZ6WdD9bxyjJ9grPQwgVVk
+  token_bot: 7195471412:AAHVrYX2NZH8NoZ6WdD9bxyjJ9grPQwgVVk
+  #7419541452:AAEl6VcNgwbquEZKupYYIcb-bvQmj56XctM // đông hoa bot
+  #7195471412:AAHVrYX2NZH8NoZ6WdD9bxyjJ9grPQwgVVk // miniBilling
 
 mysql_billing:
   host_billing: 103.112.209.141
