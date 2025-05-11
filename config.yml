@@ -10,9 +10,7 @@ log:
   compress:   true
 
 bot:
-  token_bot: 7195471412:AAHVrYX2NZH8NoZ6WdD9bxyjJ9grPQwgVVk
-  #7419541452:AAEl6VcNgwbquEZKupYYIcb-bvQmj56XctM // đông hoa bot
-  #7195471412:AAHVrYX2NZH8NoZ6WdD9bxyjJ9grPQwgVVk // miniBilling
+  token_bot: 
 
 mysql_billing:
   host_billing: 103.112.209.141
@@ -42,5 +40,5 @@ mysql_136:
   connMaxLifetime: 3600
 
 mongo:
-  url: mongodb://root:hoangdv@10.1.1.5:27017/
+  url: mongodb://root:pwd@10.1.1.5:27017/
   db_name: mini_billing
